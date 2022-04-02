@@ -17,12 +17,12 @@
       <ol v-for="(item, index) in this.paid" :key="index">
         <li>
           <span>{{index+1}}</span>
-          <img :src="item.car_image" alt="" />
+          <img :src="item.product_image" alt="" />
         </li>
-        <li>{{ item.car_name }}</li>
-        <li>{{ item.car_price * 10000 }}</li>
-        <li>{{ item.car_number }}件</li>
-        <li>￥{{ item.car_price * 10000 * item.car_number }}</li>
+        <li>{{ item.product_name }}</li>
+        <li>{{ item.product_price * 10000 }}</li>
+        <li>{{ item.product_much }}件</li>
+        <li>￥{{ item.product_price * 10000 * item.product_much }}</li>
       </ol>
     </div>
   </div>
@@ -37,7 +37,12 @@ export default {
       }
     },
     created(){
-      this.paid =  this.$store.state.Product
+      let userid = this.$store.state.personalID[0].user_id;
+      this.$http.get(`home/usercartdone/`).then(response => {
+        this.paid = response.data.filter(item => item.user_name === userid)
+        console.log(response.data);
+      })
+      // this.paid =  this.$store.state.Product
     }
 }
 </script>

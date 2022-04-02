@@ -18,31 +18,32 @@
            <router-link :to="{name:'page2',params:{username1}}">page2</router-link> // params方式 -->
       <router-link
         :to="{
-          name: 'itemList',
-          params:{
+          path: '/itemList',
+          query:{
             id:item.id,
-            car_name:item.car_name,
+            car_name:item.product_name,
             car_model:item.car_model,
-            car_price:item.car_price,
+            car_price:item.product_price,
             car_color:item.car_color,
-            car_image:item.car_image,
-            car_image2:item.car_image2,
+            car_image:item.product_image,
+            car_image2:item.product_image,
             introduce:item.introduce,
             howManyToBuy:item.howManyToBuy,
             car_purchase_method:item.car_purchase_method,
-            car_package:item.car_package
+            car_package:item.car_package,
+            user_name:item.user_name
           }
         }"
       >
         <div class="contentcenter_product_image">
-          <img :src="item.car_image" alt="" />
+          <img :src="item.product_image" alt="" />
         </div>
-        <div style="margin-left:5px;">{{item.car_name}}</div>
+        <div style="margin-left:5px;">{{item.product_name}}</div>
         <div class="contentcenter_product_wenzi">
           {{ item.introduce }}
         </div>
         <div class="contentcenter_product_price">
-          <span>￥{{item.car_price}}W</span> <span>{{item.howManyToBuy}} 人付款</span>
+          <span>￥{{item.product_price}}W</span> <span>0 人付款</span>
         </div>
       </router-link>
     </div>
@@ -64,216 +65,16 @@ export default {
       view: [],
       back: [],
       flag: true,
-      data1: [
-        {
-          id: 1,
-          car_name: "保时捷718",
-          car_price: 98.6,
-          howManyToBuy: 7,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2102/09/c23/253110912_1612841700687_270x202.jpg",
-          car_image2:"https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2101/05/c10/248575544_1609815682192_400x300.jpg",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-          car_color:["黑色","红色","黄色"],
-          car_model:["顶配","中配","低配"],
-          car_purchase_method:["全款"],
-          car_package:["套餐一"]
-        },
-        {
-          id: 2,
-          car_name: "福特Mustang",
-          car_price: 40.18,
-          howManyToBuy: 9,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2106/11/c38/267921434_1623398664242_270x202.jpg",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },
-        {
-          id: 3,
-          car_name: "保时捷911",
-          car_price:  311.45,
-          howManyToBuy: 5,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2102/18/c8/253922922_1613650093274_270x202.jpg",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },
-        {
-          id: 4,
-          car_name: "Aventador",
-          car_price: 920.4733,
-          howManyToBuy: 16,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2102/08/c11/252995866_1612760863848_270x202.png",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },       
-        {
-          id: 5,
-          car_name: "AMG GT",
-          car_price: 368.88,
-          howManyToBuy: 23,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2102/01/c6/252150543_1612171274847_270x202.jpg",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },       
-        {
-          id: 6,
-          car_name: "奧迪 R8",
-          car_price: 228.88,
-          howManyToBuy: 1,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2104/25/c8/262576026_1619321507847_270x202.jpg",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },       
-        {
-          id: 7,
-          car_name: "法拉利488",
-          car_price: 449.9,
-          howManyToBuy: 5,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2102/09/c29/253144346_1612860966069_270x202.jpg",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },       
-        {
-          id: 8,
-          car_name: "Huracán",
-          car_price: 390.00,
-          howManyToBuy: 8,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2102/07/c13/252873549_1612680347699_270x202.jpg",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },       
-        {
-          id: 9,
-          car_name: "魅影",
-          car_price: 590.00,
-          howManyToBuy: 5,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2103/01/c2/255261791_1614560034303_270x202.jpg",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },       
-        {
-          id: 10,
-          car_name: "迈凯伦720S",
-          car_price: 378.8,
-          howManyToBuy: 5,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2103/01/c2/255260091_1614559902341_270x202.jpg",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },
-        {
-          id: 1,
-          car_name: "保时捷718",
-          car_price: 98.6,
-          howManyToBuy: 7,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2102/09/c23/253110912_1612841700687_270x202.jpg",
-          car_image2:"https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2101/05/c10/248575544_1609815682192_400x300.jpg",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },
-        {
-          id: 2,
-          car_name: "福特Mustang",
-          car_price: 40.18,
-          howManyToBuy: 9,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2106/11/c38/267921434_1623398664242_270x202.jpg",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },
-        {
-          id: 3,
-          car_name: "保时捷911",
-          car_price:  311.45,
-          howManyToBuy: 5,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2102/18/c8/253922922_1613650093274_270x202.jpg",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },
-        {
-          id: 4,
-          car_name: "Aventador",
-          car_price: 920.4733,
-          howManyToBuy: 16,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2102/08/c11/252995866_1612760863848_270x202.png",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },       
-        {
-          id: 5,
-          car_name: "AMG GT",
-          car_price: 368.88,
-          howManyToBuy: 23,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2102/01/c6/252150543_1612171274847_270x202.jpg",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },       
-        {
-          id: 6,
-          car_name: "奧迪 R8",
-          car_price: 228.88,
-          howManyToBuy: 1,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2104/25/c8/262576026_1619321507847_270x202.jpg",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },       
-        {
-          id: 7,
-          car_name: "法拉利488",
-          car_price: 449.9,
-          howManyToBuy: 5,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2102/09/c29/253144346_1612860966069_270x202.jpg",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },       
-        {
-          id: 8,
-          car_name: "Huracán",
-          car_price: 390.00,
-          howManyToBuy: 8,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2102/07/c13/252873549_1612680347699_270x202.jpg",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },       
-        {
-          id: 9,
-          car_name: "魅影",
-          car_price: 590.00,
-          howManyToBuy: 5,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2103/01/c2/255261791_1614560034303_270x202.jpg",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },       
-        {
-          id: 10,
-          car_name: "迈凯伦720S",
-          car_price: 378.8,
-          howManyToBuy: 5,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2103/01/c2/255260091_1614559902341_270x202.jpg",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },       
-        {
-          id: 10,
-          car_name: "迈凯伦720S",
-          car_price: 378.8,
-          howManyToBuy: 5,
-          car_image:
-            "https://img.pcauto.com.cn/images/upload/upc/tx/auto5/2103/01/c2/255260091_1614559902341_270x202.jpg",
-          introduce: "外形拉风，低矮跑车，一看就很有范，保时捷大家都认识",
-        },       
-      ],
+      data2:[]
     };
   },
   mounted: function () {
-    // for (let i = 0; i < 53; i++) {
-    //   // console.log(this.back);
-    //   this.back.push({
-    //     id: 1,
-    //     intriduce: "北欧宇航员太空装饰画男孩卧室墙画儿童房房间墙面创意星空挂画",
-    //   });
-    // }
-    this.back.push(this.data1);
-    this.back = this.back[0]
-    this.initView();
+    this.$http.get(`home/usercart`).then(response => {
+      this.data2 = response.data
+      this.back.push(this.data2);
+      this.back = this.back[0]
+      this.initView();
+    })
   },
   methods: {
     initView: function () {
@@ -283,6 +84,7 @@ export default {
     },
   },
   created: function () {
+    
     let that = this;
     window.onscroll = function () {
       const windowHeight =
@@ -292,7 +94,7 @@ export default {
         windowHeight;
       const scrollHeight =
         document.documentElement.scrollHeight || document.body.scrollHeight;
-      // const end = document.querySelector(".end");
+      const end = document.querySelector(".end");
       const loading = document.querySelector(".loading");
       //   let height = that.$refs.getHeight.style.height;
       if (
@@ -310,11 +112,11 @@ export default {
             that.initView();
           }
         }, 1000);
-        // end.classList.remove("active");
+        end.classList.remove("active");
         loading.classList.add("active");
       } else {
         loading.classList.remove("active");
-        // end.classList.add("active");
+        end.classList.add("active");
       }
     };
   },

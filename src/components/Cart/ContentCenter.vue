@@ -24,12 +24,12 @@
             :checked="item.car_choice"
             @change="handleCheck(item.id, item)"
           />
-          <img :src="item.car_image" alt="" />
+          <img :src="item.product_image" alt="" />
         </li>
-        <li>{{ item.car_name }}</li>
-        <li>{{ item.car_price * 10000 }}</li>
-        <li>{{ item.car_number }}件</li>
-        <li>￥{{ item.car_price * 10000 * item.car_number }}</li>
+        <li>{{ item.product_name }}</li>
+        <li>{{ item.product_price * 10000 }}</li>
+        <li>{{ item.product_much }}件</li>
+        <li>￥{{ item.product_price * 10000 * item.product_much }}</li>
         <li class="shanchu" @click="deleteBtn(item.id)">单个删除</li>
       </ol>
     </div>
@@ -56,6 +56,7 @@ export default {
     return {
       cartAll: [],
       sumPrice: 0,
+      
     };
   },
   computed: {
@@ -81,14 +82,31 @@ export default {
 
   },
   created() {
-    this.cartAll = this.$store.state.CartAll;
-    let abc = this.cartAll.map(
-      (item) => item.car_price * 10000 * item.car_number
-    );
-    // let that = this
-    for (let i = 0; i < abc.length; i++) {
-      this.sumPrice += abc[i];
-    }
+    // this.cartAll = this.$store.state.CartAll;
+    let userid = this.$store.state.personalID[0].user_id;
+    this.$http.get(`home/usercart/`).then(response => {
+        this.cartAll =  response.data.filter(item => item.user_name === userid)
+        let abc = this.cartAll.map(
+          // (item) => item.car_price 
+          item => parseInt(item.product_price) * 10000 * item.product_much
+        );
+        for (let i = 0; i < abc.length; i++) {
+          this.sumPrice += abc[i];
+        }
+        
+        for(let i = 0;i<this.cartAll.length;i++){
+          const todoObj = {
+            id:this.cartAll[i].id,
+            product_price:this.cartAll[i].product_price,
+            product_much:this.cartAll[i].product_much,
+            product_image:this.cartAll[i].product_image,
+            product_name:this.cartAll[i].product_name,
+            car_choice:false
+          }
+          this.$store.dispatch('addToCart',todoObj)
+        }
+     })
+    
   },
   methods: {
     // 是否取消选择
@@ -97,31 +115,44 @@ export default {
       if (item.car_choice === true) {
         this.$store.commit(
           "addPrice",
-          item.car_price * 10000 * item.car_number
+          item.product_price * 10000 * item.product_much
         );
       } else {
         this.$store.commit(
           "jianPrice",
-          item.car_price * 10000 * item.car_number
+          item.product_price * 10000 * item.product_much
         );
       }
     },
     // 是否全选
     checkAllInput(done) {
       this.$store.commit("allChoice", done);
+      this.cartAll = this.$store.state.CartAll;
     },
     // 是否删除
     deleteBtn(id) {
       if (confirm("确定删除")) {
         this.$store.commit("deleteId", id);
         this.cartAll = this.$store.state.CartAll;
+        this.$http.delete(`cart/?id=${id}`).then((response)=>{
+            this.$message.success(response.data.message)
+        })
       }
     },
     // 是否删除全部
     clearAll() {
       if (confirm("确定删除")) {
+        let bbb = this.$store.state.CartAll.filter((todo) => {
+            return todo.car_choice 
+        });
+        for(let i = 0;i < bbb.length;i++){
+          this.$http.delete(`cart/?id=${bbb[i].id}`).then((response)=>{
+            this.$message.success(response.data.message)
+          })
+        }
         this.$store.commit("clearAllId");
         this.cartAll = this.$store.state.CartAll;
+        
       }
     },
     pay() {
@@ -129,20 +160,41 @@ export default {
       if (r == true) {
         if(this.$store.state.youMoney > this.$store.state.sumPrice){
           // 付钱
-          console.log(this.$store.state.sumPrice);
+          let user_id = this.$store.state.personalID
+          this.$http.post(`cart/?id=${user_id[0].user_id}&jine=${100000000-this.$store.state.sumPrice}`).then(()=>{
+              this.$message.success("支付成功")
+            })
           this.$store.commit("gaifuqianle", this.$store.state.sumPrice);
           // 还没购买的东西
           this.payDoneBefore = this.cartAll.filter((item) => {
             return item.car_choice === false;
           });
+
           this.$store.commit("pay1", this.payDoneBefore);
           // 购买的东西
           this.payDoneAfter = this.cartAll.filter((item) => {
             return item.car_choice === true;
           });
+          for(let i = 0;i < this.payDoneAfter.length;i++){
+            this.$http.delete(`cart/?id=${this.payDoneAfter[i].id}`).then(()=>{
+              this.$message.success("支付成功")
+            })
+          }
+          for(let i = 0;i < this.payDoneAfter.length;i++){
+            this.$http.post(`users/usercartdone/`,{
+              product_name:this.payDoneAfter[i].product_name,
+              product_price:this.payDoneAfter[i].product_price,
+              product_image:this.payDoneAfter[i].product_image,
+              product_much:this.payDoneAfter[i].product_much,
+              introduce:this.payDoneAfter.introduce,
+              user_name:user_id[0].user_id,
+            })
+          }
+          
           this.$store.commit("pay2", this.payDoneAfter);
           // 刷新页面
           this.cartAll = this.$store.state.CartAll;
+          // this.$message.success("支付成功")
         }else{
           alert("你太穷了,还房贷了？")
         }

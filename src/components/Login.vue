@@ -18,6 +18,7 @@
           <el-input
             v-model="loginForm.username"
             prefix-icon="el-icon-s-custom"
+            placeholder="请输入手机号或者账号"
           ></el-input>
         </el-form-item>
         <!-- 密码 -->
@@ -26,14 +27,16 @@
             v-model="loginForm.password"
             prefix-icon="el-icon-search"
             type="password"
+            placeholder="请输入密码"
           ></el-input>
         </el-form-item>
         <!-- 按钮 -->
         <el-form-item class="btns">
-          <el-button type="primary" @click="login" style="margin-left: 200px"
+          <span class="span" @click="zhuce">没有账号，注册一个吧</span>
+          <el-button class="button" type="primary" @click="login" 
             >登入按钮</el-button
           >
-          <el-button type="info" @click="resetLoginForm">重置按钮</el-button>
+          <el-button class="button" type="info" @click="resetLoginForm">重置按钮</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -46,8 +49,8 @@ export default {
     return {
       // 这是登入表单的数据绑定对象
       loginForm: {
-        username: "admin",
-        password: "123456",
+        username: "",
+        password: "",
       },
       // 这是表单的验证规则对象
       loginFormRules: {
@@ -59,9 +62,9 @@ export default {
             trigger: "blur",
           },
           {
-            min: 3,
-            max: 10,
-            message: "长度在3到10个字符",
+            min: 6,
+            max: 15,
+            message: "长度在3到15个字符",
             trigger: "blur",
           },
         ],
@@ -91,21 +94,26 @@ export default {
     login() {
       this.$refs.loginFormRef.validate(async (valid) => {
         if (!valid) return;
-        const { data: res } = await this.$http.post("login", this.loginForm);
-        //  console.log(res)
-        if (res.meta.status !== 200) return this.$message.error("登入失败");
-        this.$message.success("登入成功");
+        const { data: res } = await this.$http.post("users/login/", this.loginForm);
+        if(res){
+          this.$message.success("登入成功");
+        }else{
+          this.$message.error("登入失败");
+        }
         // 1. 将登入成功之后的 token,保存到客户端的 sessionStorage 中
         // 1.1 项目中除了登入之外的其他API接口，必须在登入之后才能访问
         // 1.2 token 只应当在当前网站打开期间生效，所以将token保存在sessionStorage 中
-        res.data.img = "https://i03piccdn.sogoucdn.com/1f1dac102a365433"
-        this.$store.dispatch('addID',res.data)
-        window.sessionStorage.setItem("token", "woshihhuitailang");
-        this.$store.commit("addCookie","woshihhuitailang");
+        res.img = "https://i03piccdn.sogoucdn.com/1f1dac102a365433"
+        this.$store.dispatch('addID',res)
+        window.sessionStorage.setItem("token", res.token);
+        this.$store.commit("addCookie",res.token);
         // 2. 通过编程式导航跳转到后台主页，路由地址是 /home
         this.$router.push("/home");
       });
     },
+    zhuce(){
+      this.$router.push({name:"register"})
+    }
   },
 };
 </script>
@@ -155,8 +163,19 @@ export default {
   box-sizing: border-box;
 }
 
-.btn {
-  display: flex;
-  justify-content: flex-end;
+.span{
+  font-size: 12px;
+  color: #000;
+  cursor: pointer;
+}
+.span:hover{
+  color: red;
+}
+
+.button{
+  margin-left: 60px;
+  margin-top: 20px;
+  /* position: relative; */
+  /* margin-top: -20px; */
 }
 </style>

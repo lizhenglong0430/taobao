@@ -70,7 +70,7 @@
       <div class="content_right">
         <div class="content_right_first">
           <div style="font-size: 15px; font-weight: 600">
-            {{ this.data1.introduce }}
+            {{ this.data1.car_name }}
           </div>
           <div style="font-size: 8px; color: red; margin-top: 10px">
             {{ this.data1.introduce }}
@@ -180,7 +180,7 @@
 </template>
 
 <script>
-import {nanoid} from 'nanoid'
+// import {nanoid} from 'nanoid'
 export default {
   name: "ContentCenter1",
   data() {
@@ -230,7 +230,7 @@ export default {
     this.cChoicePackage(); // 选择付款方式
   },
   created() {
-    this.data1 = this.$route.params;
+    this.data1 = this.$route.query;
   },
   methods: {
     handleChange(value) {
@@ -265,17 +265,33 @@ export default {
     // },
     
     changeCart(){
-      const todoObj = {
-        id:nanoid(),
-        car_name:this.data1.car_name,
-        car_price:this.data1.car_price,
-        car_image:this.data1.car_image,
-        car_number:this.ObjectNumber || 1,
-        car_choice:false
+      if(!sessionStorage.getItem("token")){
+        this.$message.warning("添加失败，请先登入账号")
+      }else{
+        this.$message.success("添加成功")
+        let user_id = this.$store.state.personalID
+        console.log(this.data1);
+        this.$http.post(`users/usercart/`,{
+          product_name:this.data1.car_name,
+          product_price:this.data1.car_price,
+          product_image:this.data1.car_image,
+          product_much:this.ObjectNumber || 1,
+          introduce:this.data1.introduce,
+          user_name:user_id[0].user_id,
+          // car_choice:false
+        })
+        // const todoObj = {
+        //   id:nanoid(),
+        //   car_name:this.data1.car_name,
+        //   car_price:this.data1.car_price,
+        //   car_image:this.data1.car_image,
+        //   car_number:this.ObjectNumber || 1,
+        //   car_choice:false
+        // }
+        // this.$store.commit('addToCart',this.store_data)
+        // this.$store.dispatch('addToCart',todoObj)
+        // this.$message.success("添加成功");
       }
-      // this.$store.commit('addToCart',this.store_data)
-      this.$store.dispatch('addToCart',todoObj)
-      this.$message.success("添加成功");
     },
     // 选择颜色
     cColor() {

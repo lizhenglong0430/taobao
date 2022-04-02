@@ -3,7 +3,7 @@
     <Header></Header>
     <ContentTitle></ContentTitle>
     <ContentCenter1></ContentCenter1>
-    <Footer></Footer>
+    <Footer :product="this.product"></Footer>
   </div>
 </template>
 
@@ -20,6 +20,14 @@ export default {
     ContentCenter1,
     Footer
   },
+  data(){
+    return{
+      product:[]
+    }
+  },
+  created(){
+    this.product = this.$route.query;
+  }
 };
 </script>
 

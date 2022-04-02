@@ -15,7 +15,8 @@ import {
     MessageBox,
     Carousel,
     CarouselItem,
-    InputNumber
+    InputNumber,
+    Checkbox
 } from 'element-ui'
 Vue.use(Button)
 Vue.use(Form)
@@ -31,6 +32,7 @@ Vue.use(Main)
 Vue.use(Carousel)
 Vue.use(CarouselItem)
 Vue.use(InputNumber)
+Vue.use(Checkbox)
 
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

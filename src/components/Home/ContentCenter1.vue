@@ -113,9 +113,9 @@
       <div class="contentCenter_Right_top" v-else>
         <div class="touxiang">
           <div class="image">
-            <img :src="this.arr.img" alt="" style="width:80px;height:80px;"/>
+            <img :src="this.arr.img" alt="" style="width:80px;height:80px;border:1px solid #000;"/>
             <div>Hi,你好~~</div>
-            <div class="jishanshan">{{this.arr.username}}</div>
+            <div class="jishanshan">{{this.arr.user_name}}</div>
             <button @click="findPaid()" style="width:120px;margin-left:-20px;">点击查看购买记录</button>
           </div>
         </div>

@@ -31,7 +31,7 @@ const mutations = {
         state.CartAll.filter(todo => {
             todo.car_choice = value
             if(value === true){
-                state.sumPrice += todo.car_price*10000*todo.car_number
+                state.sumPrice += todo.product_price*10000*todo.product_much
                 state.sumNumber = state.CartAll.length
             }else{
                 state.sumPrice = 0
@@ -72,6 +72,7 @@ const mutations = {
     // 添加个人id
     addID(state,value){
         state.personalID.push(value)
+        state.youMoney = value.youMoney
     },
     // 在你购物车里面剩下没有购买的东西
     pay1(state,value){
@@ -117,7 +118,7 @@ const state = {
     sumNumber:0,
     personalID:[],
     payProduct:[],
-    youMoney:10000000,
+    youMoney:0,
     cookie:""
 }
 // 准备getters——用于将state中的数据进行加工
